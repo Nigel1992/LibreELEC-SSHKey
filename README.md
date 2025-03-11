@@ -26,7 +26,8 @@ A PowerShell script to automate SSH key generation and setup for LibreELEC devic
 Run this command in PowerShell to download and execute the script. Replace the values in quotes with your own:
 
 ```powershell
-(irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1) -RemoteUser "root" -RemoteHost "libreelec" -sshKeyPath "$HOME\.ssh\libreelec"
+$script = irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1
+& ([ScriptBlock]::Create($script)) -RemoteUser "root" -RemoteHost "libreelec" -sshKeyPath "$HOME\.ssh\libreelec"
 ```
 
 Customize these parameters:
@@ -36,14 +37,17 @@ Customize these parameters:
 
 Examples:
 ```powershell
-# Using IP address
-(irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1) -RemoteHost "192.168.1.100"
+# Using IP address only
+$script = irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1
+& ([ScriptBlock]::Create($script)) -RemoteHost "192.168.1.100"
 
 # Custom username and key path
-(irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1) -RemoteUser "osmc" -sshKeyPath "$HOME\.ssh\media_center"
+$script = irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1
+& ([ScriptBlock]::Create($script)) -RemoteUser "osmc" -sshKeyPath "$HOME\.ssh\media_center"
 
 # All custom parameters
-(irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1) -RemoteUser "osmc" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\media_center"
+$script = irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1
+& ([ScriptBlock]::Create($script)) -RemoteUser "osmc" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\media_center"
 ```
 
 ### Option 2: Clone and Run
@@ -81,8 +85,9 @@ This will:
 
 Customize the parameters as needed:
 ```powershell
-# With custom parameters
-(irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1) -RemoteUser "custom_user" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\custom_key"
+# Using direct download
+$script = irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1
+& ([ScriptBlock]::Create($script)) -RemoteUser "custom_user" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\custom_key"
 
 # Or if cloned locally
 .\setup-libreelec-ssh.ps1 -RemoteUser "custom_user" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\custom_key"
