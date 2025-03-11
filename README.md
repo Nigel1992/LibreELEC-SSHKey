@@ -18,6 +18,8 @@ A PowerShell script to automate SSH key generation and setup for LibreELEC devic
 - Network access to your LibreELEC device
 - LibreELEC device with SSH enabled
 
+> **Note**: In the commands below, `$HOME` refers to your Windows user directory (typically `C:\Users\YourUsername`). For example, `$HOME\.ssh` would be `C:\Users\YourUsername\.ssh` on your system.
+
 ## 🚀 Quick Start
 
 ### Option 1: Direct PowerShell Download and Run
@@ -58,7 +60,7 @@ Run the script with default parameters:
 ```
 
 This will:
-- Generate a new SSH key at `C:\Users\YourUsername\.ssh\libreelec`
+- Generate a new SSH key at `$HOME\.ssh\libreelec`
 - Connect to LibreELEC at hostname `libreelec`
 - Use `root` as the default user
 
@@ -67,10 +69,10 @@ This will:
 Customize the parameters as needed:
 ```powershell
 # With custom parameters
-(irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1) -RemoteUser "custom_user" -RemoteHost "192.168.1.100" -sshKeyPath "C:\Users\YourUsername\.ssh\custom_key"
+(irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1) -RemoteUser "custom_user" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\custom_key"
 
 # Or if cloned locally
-.\setup-libreelec-ssh.ps1 -RemoteUser "custom_user" -RemoteHost "192.168.1.100" -sshKeyPath "C:\Users\YourUsername\.ssh\custom_key"
+.\setup-libreelec-ssh.ps1 -RemoteUser "custom_user" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\custom_key"
 ```
 
 ### Parameters
@@ -79,14 +81,14 @@ Customize the parameters as needed:
 |-----------|--------------|-------------|
 | RemoteUser | root | Username on the LibreELEC device |
 | RemoteHost | libreelec | Hostname or IP of the LibreELEC device |
-| sshKeyPath | C:\Users\YourUsername\.ssh\libreelec | Path where the SSH key will be generated |
+| sshKeyPath | $HOME\.ssh\libreelec | Path where the SSH key will be generated |
 
 ## 🔒 Security Notes
 
 - The script generates keys without a passphrase for automation purposes
 - Make sure to protect your private key file
 - Consider using a passphrase if security is a concern
-- The default key location is in your Windows user's .ssh directory (C:\Users\YourUsername\.ssh)
+- The default key location is in your user's .ssh directory (`$HOME\.ssh`, which is `C:\Users\YourUsername\.ssh` on Windows)
 - Always verify the script content before running it directly from the internet
 
 ## 🤝 Contributing
