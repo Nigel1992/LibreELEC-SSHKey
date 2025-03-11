@@ -28,8 +28,7 @@ A PowerShell script to automate SSH key generation and setup for LibreELEC devic
 Run this command in PowerShell to download and execute the script:
 
 ```powershell
-$script = irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1
-& ([ScriptBlock]::Create($script))
+$script = irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1 & ([ScriptBlock]::Create($script))
 ```
 
 The script will interactively prompt you for:
