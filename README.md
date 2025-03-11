@@ -5,11 +5,13 @@ A PowerShell script to automate SSH key generation and setup for LibreELEC devic
 ## ✨ Features
 
 - 🔐 Generates a secure 4096-bit RSA key pair
+- 🔒 Optional SSH key passphrase for enhanced security
 - 🚀 Automatically sets up the SSH agent
 - 📤 Deploys the public key to your LibreELEC device
 - 🛠️ Configures proper permissions on the remote device
 - 💫 Handles cleanup of existing keys
 - ⚙️ Customizable parameters for flexibility
+- 🎨 Interactive color-coded output
 
 ## 📋 Prerequisites
 
@@ -23,31 +25,25 @@ A PowerShell script to automate SSH key generation and setup for LibreELEC devic
 ## 🚀 Quick Start
 
 ### Option 1: Direct PowerShell Download and Run
-Run this command in PowerShell to download and execute the script. Replace the values in quotes with your own:
+Run this command in PowerShell to download and execute the script:
 
 ```powershell
 $script = irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1
-& ([ScriptBlock]::Create($script)) -RemoteUser "root" -RemoteHost "libreelec" -sshKeyPath "$HOME\.ssh\libreelec"
+& ([ScriptBlock]::Create($script))
 ```
 
-Customize these parameters:
-- `-RemoteUser`: The username on your LibreELEC device (default is "root")
-- `-RemoteHost`: Your LibreELEC device's IP address or hostname (e.g., "192.168.1.100" or "libreelec.local")
-- `-sshKeyPath`: Where to save the SSH key (default is "$HOME\.ssh\libreelec")
+The script will interactively prompt you for:
+1. Remote username (default: root)
+2. LibreELEC IP address or hostname (default: libreelec)
+3. SSH key path (default: $HOME\.ssh\libreelec)
+4. Whether to set a passphrase (optional)
 
-Examples:
+You can also provide these parameters directly:
+
 ```powershell
-# Using IP address only
+# All parameters are optional - the script will prompt for any missing values
 $script = irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1
-& ([ScriptBlock]::Create($script)) -RemoteHost "192.168.1.100"
-
-# Custom username and key path
-$script = irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1
-& ([ScriptBlock]::Create($script)) -RemoteUser "osmc" -sshKeyPath "$HOME\.ssh\media_center"
-
-# All custom parameters
-$script = irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1
-& ([ScriptBlock]::Create($script)) -RemoteUser "osmc" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\media_center"
+& ([ScriptBlock]::Create($script)) -RemoteUser "osmc" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\media_center" -Passphrase "your_secure_passphrase"
 ```
 
 ### Option 2: Clone and Run
@@ -71,27 +67,17 @@ $script = irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/
 
 ### Basic Usage
 
-Run the script with default parameters:
+Run the script without parameters for an interactive setup:
 ```powershell
 .\setup-libreelec-ssh.ps1
 ```
 
-This will:
-- Generate a new SSH key at `$HOME\.ssh\libreelec`
-- Connect to LibreELEC at hostname `libreelec`
-- Use `root` as the default user
-
-### Advanced Usage
-
-Customize the parameters as needed:
-```powershell
-# Using direct download
-$script = irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1
-& ([ScriptBlock]::Create($script)) -RemoteUser "custom_user" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\custom_key"
-
-# Or if cloned locally
-.\setup-libreelec-ssh.ps1 -RemoteUser "custom_user" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\custom_key"
-```
+The script will:
+1. Ask for configuration details (or use defaults)
+2. Show a summary of the settings
+3. Ask for confirmation before proceeding
+4. Generate and deploy the SSH key
+5. Display connection instructions
 
 ### Parameters
 
@@ -100,12 +86,13 @@ $script = irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/
 | RemoteUser | root | Username on the LibreELEC device |
 | RemoteHost | libreelec | Hostname or IP of the LibreELEC device |
 | sshKeyPath | $HOME\.ssh\libreelec | Path where the SSH key will be generated |
+| Passphrase | None | Optional passphrase to encrypt the SSH key |
 
 ## 🔒 Security Notes
 
-- The script generates keys without a passphrase for automation purposes
+- You can optionally set a passphrase for additional security
+- If no passphrase is set, the key will be generated without one for automation purposes
 - Make sure to protect your private key file
-- Consider using a passphrase if security is a concern
 - The default key location is in your user's .ssh directory (`$HOME\.ssh`, which is `C:\Users\YourUsername\.ssh` on Windows)
 - Always verify the script content before running it directly from the internet
 
