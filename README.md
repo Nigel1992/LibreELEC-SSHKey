@@ -28,7 +28,7 @@ A PowerShell script to automate SSH key generation and setup for LibreELEC devic
 Run this command in PowerShell to download and execute the script:
 
 ```powershell
-$script = irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1 & ([ScriptBlock]::Create($script))
+iex "& { $(irm 'https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1') }"
 ```
 
 The script will interactively prompt you for:
@@ -40,9 +40,7 @@ The script will interactively prompt you for:
 You can also provide these parameters directly:
 
 ```powershell
-# All parameters are optional - the script will prompt for any missing values
-$script = irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1
-& ([ScriptBlock]::Create($script)) -RemoteUser "osmc" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\media_center" -Passphrase "your_secure_passphrase"
+.\setup-libreelec-ssh.ps1 -RemoteUser "osmc" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\media_center" -Passphrase "your_secure_passphrase"
 ```
 
 ### Option 2: Clone and Run
