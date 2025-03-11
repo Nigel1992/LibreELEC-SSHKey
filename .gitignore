@@ -1,0 +1,28 @@
+# SSH Keys
+*.key
+*.pub
+id_rsa
+id_rsa.pub
+known_hosts
+
+# PowerShell
+*.ps1.log
+*.psm1.log
+*.psd1.log
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Temp files
+*.tmp
+*.temp
+~*
+
+# Logs
+logs/
+*.log 
