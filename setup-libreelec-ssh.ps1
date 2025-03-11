@@ -1,8 +1,8 @@
 [CmdletBinding()]
 param (
-    [string]$RemoteUser,
-    [string]$RemoteHost,
-    [string]$sshKeyPath,
+    [string]$RemoteUser = "root",
+    [string]$RemoteHost = "libreelec",
+    [string]$sshKeyPath = "$HOME\.ssh\libreelec",
     [string]$Passphrase
 )
 
@@ -29,41 +29,33 @@ function Get-UserInput {
     Write-ColorOutput "🔑 LibreELEC SSH Key Setup" "Cyan"
     Write-ColorOutput "=========================" "Cyan"
     
-    if (-not $RemoteUser) {
-        Write-ColorOutput "`n👤 Enter remote username [default: root]: " "Yellow" -NoNewline
-        $input = Read-Host
-        $script:RemoteUser = if ($input) { $input } else { "root" }
-    }
+    Write-ColorOutput "`n👤 Enter remote username [default: root]: " "Yellow" -NoNewline
+    $input = Read-Host
+    if ($input) { $script:RemoteUser = $input }
     
-    if (-not $RemoteHost) {
-        Write-ColorOutput "`n🌐 Enter LibreELEC IP address or hostname [default: libreelec]: " "Yellow" -NoNewline
-        $input = Read-Host
-        $script:RemoteHost = if ($input) { $input } else { "libreelec" }
-    }
+    Write-ColorOutput "`n🌐 Enter LibreELEC IP address or hostname [default: libreelec]: " "Yellow" -NoNewline
+    $input = Read-Host
+    if ($input) { $script:RemoteHost = $input }
     
-    if (-not $sshKeyPath) {
-        Write-ColorOutput "`n📂 Enter SSH key path [default: $HOME\.ssh\libreelec]: " "Yellow" -NoNewline
-        $input = Read-Host
-        $script:sshKeyPath = if ($input) { $input } else { "$HOME\.ssh\libreelec" }
-    }
+    Write-ColorOutput "`n📂 Enter SSH key path [default: $HOME\.ssh\libreelec]: " "Yellow" -NoNewline
+    $input = Read-Host
+    if ($input) { $script:sshKeyPath = $input }
 
-    if (-not $Passphrase) {
-        Write-ColorOutput "`n🔒 Do you want to set a passphrase for the SSH key? (Y/N) [default: N]: " "Yellow" -NoNewline
-        $usePassphrase = Read-Host
-        if ($usePassphrase -and $usePassphrase.ToLower() -eq 'y') {
-            Write-ColorOutput "`n   Enter passphrase (or press Enter for no passphrase): " "Yellow" -NoNewline
-            $script:Passphrase = Read-Host
-            if ($Passphrase) {
-                Write-ColorOutput "   Confirm passphrase: " "Yellow" -NoNewline
-                $confirmPass = Read-Host
-                if ($Passphrase -ne $confirmPass) {
-                    Write-ColorOutput "`n❌ Passphrases do not match. Please try again." "Red"
-                    exit 1
-                }
+    Write-ColorOutput "`n🔒 Do you want to set a passphrase for the SSH key? (Y/N) [default: N]: " "Yellow" -NoNewline
+    $usePassphrase = Read-Host
+    if ($usePassphrase -and $usePassphrase.ToLower() -eq 'y') {
+        Write-ColorOutput "`n   Enter passphrase (or press Enter for no passphrase): " "Yellow" -NoNewline
+        $script:Passphrase = Read-Host
+        if ($Passphrase) {
+            Write-ColorOutput "   Confirm passphrase: " "Yellow" -NoNewline
+            $confirmPass = Read-Host
+            if ($Passphrase -ne $confirmPass) {
+                Write-ColorOutput "`n❌ Passphrases do not match. Please try again." "Red"
+                exit 1
             }
-        } else {
-            $script:Passphrase = ""
         }
+    } else {
+        $script:Passphrase = ""
     }
 }
 
@@ -127,4 +119,4 @@ try {
     Write-ColorOutput "`n❌ Error: Failed to deploy SSH key to remote device" "Red"
     Write-ColorOutput "Error details: $_" "Red"
     exit 1
-} 
+}
