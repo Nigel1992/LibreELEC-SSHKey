@@ -58,7 +58,7 @@ Run the script with default parameters:
 ```
 
 This will:
-- Generate a new SSH key at `$HOME\.ssh\libreelec`
+- Generate a new SSH key at `C:\Users\YourUsername\.ssh\libreelec`
 - Connect to LibreELEC at hostname `libreelec`
 - Use `root` as the default user
 
@@ -66,11 +66,11 @@ This will:
 
 Customize the parameters as needed:
 ```powershell
-# Using direct download
-irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1 | iex -RemoteUser "custom_user" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\custom_key"
+# With custom parameters
+(irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1) -RemoteUser "custom_user" -RemoteHost "192.168.1.100" -sshKeyPath "C:\Users\YourUsername\.ssh\custom_key"
 
 # Or if cloned locally
-.\setup-libreelec-ssh.ps1 -RemoteUser "custom_user" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\custom_key"
+.\setup-libreelec-ssh.ps1 -RemoteUser "custom_user" -RemoteHost "192.168.1.100" -sshKeyPath "C:\Users\YourUsername\.ssh\custom_key"
 ```
 
 ### Parameters
@@ -79,14 +79,14 @@ irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libr
 |-----------|--------------|-------------|
 | RemoteUser | root | Username on the LibreELEC device |
 | RemoteHost | libreelec | Hostname or IP of the LibreELEC device |
-| sshKeyPath | $HOME\.ssh\libreelec | Path where the SSH key will be generated |
+| sshKeyPath | C:\Users\YourUsername\.ssh\libreelec | Path where the SSH key will be generated |
 
 ## 🔒 Security Notes
 
 - The script generates keys without a passphrase for automation purposes
 - Make sure to protect your private key file
 - Consider using a passphrase if security is a concern
-- The default key location is in your user's .ssh directory
+- The default key location is in your Windows user's .ssh directory (C:\Users\YourUsername\.ssh)
 - Always verify the script content before running it directly from the internet
 
 ## 🤝 Contributing
