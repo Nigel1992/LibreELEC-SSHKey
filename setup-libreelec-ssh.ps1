@@ -3,7 +3,7 @@ param (
     [string]$RemoteUser = "root",
     [string]$RemoteHost = "libreelec",
     [string]$sshKeyPath = "$HOME\.ssh\libreelec",
-    [string]$Passphrase
+    [string]$Passphrase = ""
 )
 
 # Function to write colored output
@@ -24,28 +24,28 @@ function Write-ColorOutput {
     }
 }
 
-# Function to prompt for parameters if not provided
+# Function to prompt for parameters if not provided from command line
 function Get-UserInput {
     Write-ColorOutput "🔑 LibreELEC SSH Key Setup" "Cyan"
     Write-ColorOutput "=========================" "Cyan"
     
-    Write-ColorOutput "`n👤 Enter remote username [default: root]: " "Yellow" -NoNewline
+    Write-ColorOutput "`n👤 Enter remote username [default: $RemoteUser]: " "Yellow" -NoNewline
     $input = Read-Host
-    if ($input) { $script:RemoteUser = $input }
+    if ($input) { $RemoteUser = $input }
     
-    Write-ColorOutput "`n🌐 Enter LibreELEC IP address or hostname [default: libreelec]: " "Yellow" -NoNewline
+    Write-ColorOutput "`n🌐 Enter LibreELEC IP address or hostname [default: $RemoteHost]: " "Yellow" -NoNewline
     $input = Read-Host
-    if ($input) { $script:RemoteHost = $input }
+    if ($input) { $RemoteHost = $input }
     
-    Write-ColorOutput "`n📂 Enter SSH key path [default: $HOME\.ssh\libreelec]: " "Yellow" -NoNewline
+    Write-ColorOutput "`n📂 Enter SSH key path [default: $sshKeyPath]: " "Yellow" -NoNewline
     $input = Read-Host
-    if ($input) { $script:sshKeyPath = $input }
+    if ($input) { $sshKeyPath = $input }
 
     Write-ColorOutput "`n🔒 Do you want to set a passphrase for the SSH key? (Y/N) [default: N]: " "Yellow" -NoNewline
     $usePassphrase = Read-Host
     if ($usePassphrase -and $usePassphrase.ToLower() -eq 'y') {
         Write-ColorOutput "`n   Enter passphrase (or press Enter for no passphrase): " "Yellow" -NoNewline
-        $script:Passphrase = Read-Host
+        $Passphrase = Read-Host
         if ($Passphrase) {
             Write-ColorOutput "   Confirm passphrase: " "Yellow" -NoNewline
             $confirmPass = Read-Host
@@ -54,13 +54,25 @@ function Get-UserInput {
                 exit 1
             }
         }
-    } else {
-        $script:Passphrase = ""
+    }
+
+    # Return the values
+    return @{
+        RemoteUser = $RemoteUser
+        RemoteHost = $RemoteHost
+        sshKeyPath = $sshKeyPath
+        Passphrase = $Passphrase
     }
 }
 
-# Get parameters if not provided
-Get-UserInput
+# Get parameters if not provided from command line
+$params = Get-UserInput
+
+# Update script variables with either user input or defaults
+$RemoteUser = $params.RemoteUser
+$RemoteHost = $params.RemoteHost
+$sshKeyPath = $params.sshKeyPath
+$Passphrase = $params.Passphrase
 
 # Show configuration
 Write-ColorOutput "`n📋 Configuration:" "Magenta"
@@ -80,10 +92,6 @@ if ($confirm -and $confirm.ToLower() -eq 'n') {
 }
 
 Write-ColorOutput "`n🚀 Starting SSH key setup..." "Green"
-
-# Remove any existing SSH key
-Write-ColorOutput "`n🗑️ Removing any existing SSH keys..." "Blue"
-Remove-Item "$sshKeyPath*" -Force -ErrorAction SilentlyContinue
 
 # Generate a new SSH key with or without passphrase
 Write-ColorOutput "🔑 Generating new SSH key..." "Blue"
