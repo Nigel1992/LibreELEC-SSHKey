@@ -27,15 +27,7 @@ Run these commands in PowerShell to download and execute the script:
 # With default settings
 irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1 | iex
 
-# With custom parameters (Method 1 - Parameter splatting)
-$params = @{
-    RemoteUser = "custom_user"
-    RemoteHost = "192.168.1.100"
-    sshKeyPath = "$HOME\.ssh\custom_key"
-}
-irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1 | iex @params
-
-# With custom parameters (Method 2 - Direct parameters)
+# With custom parameters
 (irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1) -RemoteUser "custom_user" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\custom_key"
 ```
 
