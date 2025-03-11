@@ -18,17 +18,29 @@ A PowerShell script to automate SSH key generation and setup for LibreELEC devic
 - Network access to your LibreELEC device
 - LibreELEC device with SSH enabled
 
-## 🚀 Installation
+## 🚀 Quick Start
 
+### Option 1: Direct PowerShell Download and Run
+Run this one-liner in PowerShell to download and execute the script (with default settings):
+```powershell
+irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1 | iex
+```
+
+### Option 2: Clone and Run
 1. Clone this repository:
    ```powershell
-   git clone https://github.com/yourusername/libreelec-ssh-setup.git
-   cd libreelec-ssh-setup
+   git clone https://github.com/Nigel1992/LibreELEC-SSHKey.git
+   cd LibreELEC-SSHKey
    ```
 
 2. Ensure you have execution permissions:
    ```powershell
    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+   ```
+
+3. Run the script:
+   ```powershell
+   .\setup-libreelec-ssh.ps1
    ```
 
 ## 💻 Usage
@@ -49,6 +61,10 @@ This will:
 
 Customize the parameters as needed:
 ```powershell
+# Using direct download
+irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1 | iex -RemoteUser "custom_user" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\custom_key"
+
+# Or if cloned locally
 .\setup-libreelec-ssh.ps1 -RemoteUser "custom_user" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\custom_key"
 ```
 
@@ -66,6 +82,7 @@ Customize the parameters as needed:
 - Make sure to protect your private key file
 - Consider using a passphrase if security is a concern
 - The default key location is in your user's .ssh directory
+- Always verify the script content before running it directly from the internet
 
 ## 🤝 Contributing
 
