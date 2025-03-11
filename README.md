@@ -23,14 +23,27 @@ A PowerShell script to automate SSH key generation and setup for LibreELEC devic
 ## 🚀 Quick Start
 
 ### Option 1: Direct PowerShell Download and Run
-Run these commands in PowerShell to download and execute the script:
+Run this command in PowerShell to download and execute the script. Replace the values in quotes with your own:
 
 ```powershell
-# With default settings
-irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1 | iex
+(irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1) -RemoteUser "root" -RemoteHost "libreelec" -sshKeyPath "$HOME\.ssh\libreelec"
+```
 
-# With custom parameters
-(irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1) -RemoteUser "custom_user" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\custom_key"
+Customize these parameters:
+- `-RemoteUser`: The username on your LibreELEC device (default is "root")
+- `-RemoteHost`: Your LibreELEC device's IP address or hostname (e.g., "192.168.1.100" or "libreelec.local")
+- `-sshKeyPath`: Where to save the SSH key (default is "$HOME\.ssh\libreelec")
+
+Examples:
+```powershell
+# Using IP address
+(irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1) -RemoteHost "192.168.1.100"
+
+# Custom username and key path
+(irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1) -RemoteUser "osmc" -sshKeyPath "$HOME\.ssh\media_center"
+
+# All custom parameters
+(irm https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1) -RemoteUser "osmc" -RemoteHost "192.168.1.100" -sshKeyPath "$HOME\.ssh\media_center"
 ```
 
 ### Option 2: Clone and Run
