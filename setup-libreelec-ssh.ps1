@@ -1,3 +1,6 @@
+# One-liner to download and run this script:
+# iex "& { $(irm 'https://raw.githubusercontent.com/Nigel1992/LibreELEC-SSHKey/main/setup-libreelec-ssh.ps1') }"
+
 [CmdletBinding()]
 param (
     [string]$RemoteUser = "root",
@@ -145,6 +148,15 @@ if (-not (Test-Path "$sshKeyPath.pub")) {
 
 # Read the public key content
 Write-ColorOutput "📤 Deploying public key to LibreELEC..." "Blue"
+
+Write-ColorOutput "`n⚠️ Important: During the connection process, you may see the following prompts:" "Yellow"
+Write-ColorOutput "1. Host verification - If you see a message like:" "White"
+Write-ColorOutput "   'The authenticity of host `"libreelec`" can't be established...'" "Cyan"
+Write-ColorOutput "   This is normal for first-time connections. Type 'yes' to continue." "White"
+Write-ColorOutput "2. Password prompt - You'll need to enter your LibreELEC password" "White"
+Write-ColorOutput "   (default is 'libreelec' if you haven't changed it)" "White"
+Write-ColorOutput "`nProceeding with key deployment..." "Blue"
+
 try {
     $publicKey = Get-Content "$sshKeyPath.pub"
 
@@ -153,11 +165,28 @@ try {
     
     # Output success message
     Write-ColorOutput "`n✅ SSH key setup completed successfully!" "Green"
-    Write-ColorOutput "📝 Connection details:" "Cyan"
+    Write-ColorOutput "`n📋 Summary of what was done:" "Cyan"
+    Write-ColorOutput "• Generated SSH key pair at: $sshKeyPath" "White"
+    Write-ColorOutput "• Added public key to LibreELEC at: $RemoteHost" "White"
+    Write-ColorOutput "• Configured SSH agent for automatic key management" "White"
+
+    Write-ColorOutput "`n🔗 To connect to your LibreELEC device:" "Cyan"
     Write-ColorOutput "   ssh -i $sshKeyPath $RemoteUser@$RemoteHost" "White"
+    Write-ColorOutput "   - You can now copy/paste this command to connect" "Gray"
+    Write-ColorOutput "   - Future connections will not require a password" "Gray"
+
     if ($Passphrase) {
         Write-ColorOutput "`n⚠️ Note: You'll need to enter your passphrase when using this key" "Yellow"
     }
+
+    Write-ColorOutput "`n💡 Tip: Add this to your SSH config for easier access:" "Cyan"
+    Write-ColorOutput @"
+   # Add to ~/.ssh/config:
+   Host libreelec
+       HostName $RemoteHost
+       User $RemoteUser
+       IdentityFile $sshKeyPath
+"@ "Gray"
 } catch {
     Write-ColorOutput "`n❌ Error: Failed to deploy SSH key to remote device" "Red"
     Write-ColorOutput "Error details: $_" "Red"
