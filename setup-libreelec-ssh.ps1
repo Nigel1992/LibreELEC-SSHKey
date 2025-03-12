@@ -179,14 +179,33 @@ try {
         Write-ColorOutput "`n⚠️ Note: You'll need to enter your passphrase when using this key" "Yellow"
     }
 
-    Write-ColorOutput "`n💡 Tip: Add this to your SSH config for easier access:" "Cyan"
-    Write-ColorOutput @"
-   # Add to ~/.ssh/config:
-   Host libreelec
-       HostName $RemoteHost
-       User $RemoteUser
-       IdentityFile $sshKeyPath
-"@ "Gray"
+    Write-ColorOutput "`n💡 Would you like to create an SSH config file for easier access? (Y/N) [default: Y]: " "Yellow" -NoNewline
+    $createConfig = Read-Host
+    if (!$createConfig -or $createConfig.ToLower() -eq 'y') {
+        $configPath = "$HOME\.ssh\config"
+        $configDir = Split-Path -Parent $configPath
+        
+        # Ensure .ssh directory exists
+        Ensure-Directory $configDir
+
+        # Create or append to config file
+        $configContent = "`n# LibreELEC SSH Configuration"
+        $configContent += "`nHost libreelec"
+        $configContent += "`n    HostName $RemoteHost"
+        $configContent += "`n    User $RemoteUser"
+        $configContent += "`n    IdentityFile $sshKeyPath"
+        
+        try {
+            Add-Content -Path $configPath -Value $configContent
+            Write-ColorOutput "`n✅ SSH config created successfully!" "Green"
+            Write-ColorOutput "📝 You can now connect simply by typing:" "Cyan"
+            Write-ColorOutput "   ssh libreelec" "White"
+        } catch {
+            Write-ColorOutput "`n⚠️ Could not create SSH config file" "Yellow"
+            Write-ColorOutput ("You can manually add these lines to " + $configPath + ":") "Yellow"
+            Write-ColorOutput $configContent "White"
+        }
+    }
 } catch {
     Write-ColorOutput "`n❌ Error: Failed to deploy SSH key to remote device" "Red"
     Write-ColorOutput "Error details: $_" "Red"
