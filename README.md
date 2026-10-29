@@ -5,6 +5,8 @@
 
 # 🔑 LibreELEC SSH Key Setup Script
 
+[![Vibe Coded](https://img.shields.io/badge/Vibe_Coded-✨-8A2BE2?style=for-the-badge)](https://github.com)
+
 A PowerShell script to automate SSH key generation and setup for LibreELEC devices. This script streamlines the process of creating and deploying SSH keys, making it easier to establish secure connections to your LibreELEC media center.
 
 ## ✨ Features
